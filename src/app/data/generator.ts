@@ -30,6 +30,7 @@ const MESSAGES: Partial<Record<UseCaseId, string>> = {
   no_staff: 'Designated zone unmanned',
   fall_loitering: 'Fall / loitering detected',
   safety_gear: 'Missing safety equipment detected',
+  conveyor_belt_health: 'Belt misalignment / jam detected',
 };
 
 function pad(n: number): string {

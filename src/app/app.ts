@@ -7,29 +7,44 @@ import { SingleCameraViewComponent } from './components/single-camera-view/singl
 import { AppHeaderComponent } from './pages/app-header.component';
 import { HomeComponent } from './pages/home.component';
 import { DashboardComponent } from './pages/dashboard.component';
+import { PlantViewComponent } from './three/plant-view.component';
+import { UseCaseMasterViewComponent } from './pages/usecase-master-view.component';
+import { USE_CASE_BY_ID } from './core/tokens';
 import { incidentToEvidence } from './data/evidence-adapter';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, SingleCameraViewComponent, AppHeaderComponent, HomeComponent, DashboardComponent],
+  imports: [CommonModule, SingleCameraViewComponent, AppHeaderComponent, HomeComponent, DashboardComponent, PlantViewComponent, UseCaseMasterViewComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <app-header-bar
       *ngIf="view !== 'home'"
-      [title]="'Vision Dashboard'"
+      [title]="headerTitle"
       [showBack]="true"
-      (back)="goHome()"
+      (back)="onBack()"
     ></app-header-bar>
 
     <app-home
       *ngIf="view === 'home'"
-      (showDemo)="goDashboard()"
-      (selectUseCase)="goDashboard($event)"
+      (showDemo)="goPlant()"
+      (selectUseCase)="goUseCase($event, false)"
     ></app-home>
+    <div *ngIf="view === 'plant'" class="h-[calc(100vh-57px)] w-full">
+      <app-plant-view (selectUseCase)="goUseCase($event, true)"></app-plant-view>
+    </div>
+    <div *ngIf="view === 'usecase'" class="h-[calc(100vh-57px)] w-full">
+      <app-usecase-master-view
+        [useCaseId]="currentUseCase"
+        (viewDashboard)="goDashboard(currentUseCase)"
+        (viewViolations)="goDashboardViolations($event)"
+      ></app-usecase-master-view>
+    </div>
     <app-dashboard
       *ngIf="view === 'dashboard'"
       [initialUseCase]="dashboardUseCase"
+      [initialCamera]="dashboardCamera"
+      [focusList]="dashboardFocusList"
       (openIncident)="openWidget($event)"
     ></app-dashboard>
 
@@ -50,14 +65,47 @@ import { incidentToEvidence } from './data/evidence-adapter';
 export class App {
   view: AppView = 'home';
   dashboardUseCase: UseCaseId | 'all' = 'all';
+  dashboardCamera: string | null = null;
+  dashboardFocusList = false;
+  currentUseCase: UseCaseId = 'safety_gear';
 
   modalEvidences: Evidence[] = [];
   modalIndex: number | null = null;
 
+  /** whether the current use-case view was reached from the 3D plant map */
+  private ucFromPlant = false;
+
+  get headerTitle(): string {
+    if (this.view === 'plant') return 'Plant Operations Map';
+    if (this.view === 'usecase') return USE_CASE_BY_ID[this.currentUseCase].name;
+    return 'Vision Dashboard';
+  }
+
   goHome(): void { this.view = 'home'; this.closeWidget(); }
+  goPlant(): void { this.view = 'plant'; this.closeWidget(); }
+  goUseCase(useCase: UseCaseId, fromPlant: boolean): void {
+    this.currentUseCase = useCase;
+    this.ucFromPlant = fromPlant;
+    this.view = 'usecase';
+    this.closeWidget();
+  }
   goDashboard(useCase: UseCaseId | 'all' = 'all'): void {
     this.dashboardUseCase = useCase;
+    this.dashboardCamera = null;
+    this.dashboardFocusList = false;
     this.view = 'dashboard';
+  }
+  /** Deep-link into the dashboard's non-compliance list (optionally camera-filtered). */
+  goDashboardViolations(camera?: string): void {
+    this.dashboardUseCase = this.currentUseCase;
+    this.dashboardCamera = camera ?? null;
+    this.dashboardFocusList = true;
+    this.view = 'dashboard';
+  }
+  onBack(): void {
+    if (this.view === 'dashboard') this.goUseCase(this.currentUseCase, this.ucFromPlant);
+    else if (this.view === 'usecase') this.ucFromPlant ? this.goPlant() : this.goHome();
+    else this.goHome();
   }
 
   openWidget(payload: { incident: Incident; scoped: Incident[] }): void {

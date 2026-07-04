@@ -3,18 +3,18 @@ import { Camera, CameraArea } from './model';
 
 /** 12 cameras: 4 lab + 3 production + 3 equipment + 2 perimeter. */
 export const CAMERAS: readonly Camera[] = [
-  { id: 'cam_lab_gf_1', name: 'Maxpro Lab GF 1', area: 'lab', zone: 'Lab GF Zone', scene: 'lab' },
-  { id: 'cam_lab_gf_2', name: 'Maxpro Lab GF 2', area: 'lab', zone: 'Lab GF Zone', scene: 'lab' },
-  { id: 'cam_lab_ff_1', name: 'Maxpro Lab FF 1', area: 'lab', zone: 'Lab FF Zone', scene: 'lab' },
-  { id: 'cam_lab_ff_2', name: 'Maxpro Lab FF 2', area: 'lab', zone: 'Lab FF Zone', scene: 'lab' },
-  { id: 'cam_prod_1', name: 'Production Floor 1', area: 'production', zone: 'Assembly East', scene: 'factory' },
-  { id: 'cam_prod_2', name: 'Production Floor 2', area: 'production', zone: 'Assembly West', scene: 'factory' },
-  { id: 'cam_prod_3', name: 'Production Floor 3', area: 'production', zone: 'Packing Line', scene: 'factory' },
-  { id: 'cam_cool_1', name: 'UPI 14 MEE Cooling Tower', area: 'equipment', zone: 'Cooling Yard', scene: 'cooling_tower' },
-  { id: 'cam_cool_2', name: 'Cooling Tower 2', area: 'equipment', zone: 'Cooling Yard', scene: 'cooling_tower' },
-  { id: 'cam_boiler', name: 'Boiler Room', area: 'equipment', zone: 'Utilities', scene: 'loading_bay' },
-  { id: 'cam_main_road', name: 'Main Road', area: 'perimeter', zone: 'North Perimeter', scene: 'road' },
-  { id: 'cam_main_gate', name: 'Main Gate', area: 'perimeter', zone: 'Main Entrance', scene: 'gate' },
+  { id: 'cam_lab_gf_1', name: 'Maxpro Lab GF 1', area: 'lab', zone: 'Lab GF Zone', scene: 'lab', ip: '10.20.11.21' },
+  { id: 'cam_lab_gf_2', name: 'Maxpro Lab GF 2', area: 'lab', zone: 'Lab GF Zone', scene: 'lab', ip: '10.20.11.22' },
+  { id: 'cam_lab_ff_1', name: 'Maxpro Lab FF 1', area: 'lab', zone: 'Lab FF Zone', scene: 'lab', ip: '10.20.11.23' },
+  { id: 'cam_lab_ff_2', name: 'Maxpro Lab FF 2', area: 'lab', zone: 'Lab FF Zone', scene: 'lab', ip: '10.20.11.24' },
+  { id: 'cam_prod_1', name: 'Production Floor 1', area: 'production', zone: 'Assembly East', scene: 'factory', ip: '10.20.22.31' },
+  { id: 'cam_prod_2', name: 'Production Floor 2', area: 'production', zone: 'Assembly West', scene: 'factory', ip: '10.20.22.32' },
+  { id: 'cam_prod_3', name: 'Production Floor 3', area: 'production', zone: 'Packing Line', scene: 'factory', ip: '10.20.22.33' },
+  { id: 'cam_cool_1', name: 'UPI 14 MEE Cooling Tower', area: 'equipment', zone: 'Cooling Yard', scene: 'cooling_tower', ip: '10.20.33.41' },
+  { id: 'cam_cool_2', name: 'Cooling Tower 2', area: 'equipment', zone: 'Cooling Yard', scene: 'cooling_tower', ip: '10.20.33.42' },
+  { id: 'cam_boiler', name: 'Boiler Room', area: 'equipment', zone: 'Utilities', scene: 'loading_bay', ip: '10.20.33.43' },
+  { id: 'cam_main_road', name: 'Main Road', area: 'perimeter', zone: 'North Perimeter', scene: 'road', ip: '10.20.44.51' },
+  { id: 'cam_main_gate', name: 'Main Gate', area: 'perimeter', zone: 'Main Entrance', scene: 'gate', ip: '10.20.44.52' },
 ];
 
 export const CAMERA_BY_ID: Record<string, Camera> = CAMERAS.reduce(
@@ -28,8 +28,8 @@ export const CAMERA_BY_ID: Record<string, Camera> = CAMERAS.reduce(
  */
 export const AFFINITY: Record<CameraArea, Partial<Record<UseCaseId, number>>> = {
   lab: { lab_safety: 10, no_vest: 4, no_helmet: 3, safety_gear: 2, fall_loitering: 1 },
-  production: { no_helmet: 6, no_vest: 6, safety_gear: 4, overcrowding: 3, fall_loitering: 3, no_staff: 2 },
-  equipment: { safety_gear: 5, no_helmet: 4, no_vest: 4, fire_smoke: 3, fall_loitering: 2 },
+  production: { no_helmet: 6, no_vest: 6, safety_gear: 4, conveyor_belt_health: 5, overcrowding: 3, fall_loitering: 3, no_staff: 2 },
+  equipment: { safety_gear: 5, no_helmet: 4, no_vest: 4, conveyor_belt_health: 6, fire_smoke: 3, fall_loitering: 2 },
   perimeter: { intrusion: 8, overcrowding: 4, no_staff: 3, fall_loitering: 2 },
 };
 

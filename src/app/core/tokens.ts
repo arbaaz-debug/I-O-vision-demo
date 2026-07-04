@@ -32,7 +32,8 @@ export type UseCaseId =
   | 'no_staff'
   | 'no_helmet'
   | 'no_vest'
-  | 'intrusion';
+  | 'intrusion'
+  | 'conveyor_belt_health';
 
 export interface UseCaseMeta {
   id: UseCaseId;
@@ -62,6 +63,8 @@ export const USE_CASES: readonly UseCaseMeta[] = [
     description: 'Identifies workers without high-visibility safety vests' },
   { id: 'intrusion', name: 'Intrusion Detection', color: '#EAB308', icon: 'shield',
     description: 'Detects unauthorized access to restricted or perimeter zones' },
+  { id: 'conveyor_belt_health', name: 'Conveyor Belt Health', color: '#14B8A6', icon: 'belt',
+    description: 'Monitors conveyor / pipe-rack belt alignment, wear and jams' },
 ];
 
 /** O(1) lookup by id. */

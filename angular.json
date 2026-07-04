@@ -54,7 +54,9 @@
         "serve": {
           "builder": "@angular/build:dev-server",
           "options": {
-            "allowedHosts": ["app-496c5aef.iocompute.ai"]
+            "allowedHosts": [".iocompute.ai"],
+            "host": "0.0.0.0",
+            "port": 4200
           },
           "configurations": {
             "production": {

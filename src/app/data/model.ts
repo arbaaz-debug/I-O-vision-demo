@@ -10,6 +10,7 @@ export interface Camera {
   area: CameraArea;
   zone: string;
   scene: SceneId;
+  ip: string;
 }
 
 export interface Incident {
@@ -31,7 +32,7 @@ export interface Filters {
   severity: Severity | 'all'; // table header filter
 }
 
-export type AppView = 'home' | 'dashboard';
+export type AppView = 'home' | 'plant' | 'usecase' | 'dashboard';
 
 export interface Kpis {
   total: number;
