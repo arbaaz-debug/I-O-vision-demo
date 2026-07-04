@@ -53,6 +53,9 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "allowedHosts": ["app-496c5aef.iocompute.ai"]
+          },
           "configurations": {
             "production": {
               "buildTarget": "io-vision-widget:build:production"
