@@ -1,0 +1,107 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+  height: 100%;
+}
+body {
+  background-color: #f5f6f8;
+  /* Apple system font (San Francisco) across the whole app */
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display',
+    'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ---------- LiveFeed (simulated CCTV tile) ---------- */
+.lf-root {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #0b0e13;
+}
+.lf-layer {
+  position: absolute;
+  inset: 0;
+}
+.lf-fig {
+  position: absolute;
+  border-radius: 40% 40% 45% 45%;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+  will-change: transform;
+}
+.lf-fig::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: -42%;
+  width: 60%;
+  height: 44%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: inherit;
+}
+@keyframes lf-walkA {
+  0% { transform: translate(6%, 66%); }
+  25% { transform: translate(40%, 50%); }
+  50% { transform: translate(78%, 58%); }
+  75% { transform: translate(44%, 72%); }
+  100% { transform: translate(6%, 66%); }
+}
+@keyframes lf-walkB {
+  0% { transform: translate(82%, 40%); }
+  50% { transform: translate(24%, 76%); }
+  100% { transform: translate(82%, 40%); }
+}
+@keyframes lf-walkC {
+  0% { transform: translate(50%, 30%); }
+  50% { transform: translate(58%, 80%); }
+  100% { transform: translate(50%, 30%); }
+}
+@keyframes lf-scan {
+  0% { top: -6%; opacity: 0; }
+  8% { opacity: 0.55; }
+  92% { opacity: 0.55; }
+  100% { top: 104%; opacity: 0; }
+}
+@keyframes lf-pulse {
+  0%, 70% { opacity: 1; }
+  85% { opacity: 0.25; }
+  100% { opacity: 1; }
+}
+@keyframes lf-grain {
+  0%, 100% { opacity: 0.05; }
+  50% { opacity: 0.11; }
+}
+.lf-figA { animation: lf-walkA 16s ease-in-out infinite; }
+.lf-figB { animation: lf-walkB 21s ease-in-out infinite; }
+.lf-figC { animation: lf-walkC 13s ease-in-out infinite; }
+.lf-scan { animation: lf-scan 5s linear infinite; }
+.lf-rec { animation: lf-pulse 1.5s ease-in-out infinite; }
+.lf-grain { animation: lf-grain 0.5s steps(2) infinite; }
+
+/* ---------- Dashboard density matrix ---------- */
+.dash {
+  --h0: #f5f8fc; --h1: #fff2d9; --h2: #ffd8a1; --h3: #fdb771; --h4: #fb8f4b; --h5: #ef6a34; --h6: #d63f2a;
+}
+.dash .matrix-scroll { overflow-x: auto; padding-bottom: 4px; }
+.dash .matrix { display: grid; gap: 3px; align-items: stretch; }
+.dash .sevcell { position: relative; height: 50px; display: flex; flex-direction: column-reverse; border-radius: 4px; overflow: hidden; background: #f7fafc; }
+.dash .sevcell > span { display: block; width: 100%; }
+.dash .m-total-head { display: flex; align-items: flex-end; justify-content: center; font-size: 11px; font-weight: 800; color: #94a3b8; padding-bottom: 4px; }
+.dash .hour-axis { height: 18px; display: flex; align-items: center; justify-content: flex-start; font-size: 10.5px; color: #94a3b8; font-weight: 600; }
+.dash .cam-label { display: flex; flex-direction: column; justify-content: center; padding-right: 10px; font-size: 12.5px; font-weight: 600; color: #0f172a; text-align: right; align-items: flex-end; }
+.dash .cam-label small { font-size: 10px; color: #94a3b8; font-weight: 600; }
+.dash .cam-label.idle { color: #94a3b8; font-weight: 500; }
+.dash .cell { height: 29px; border-radius: 4px; background: var(--h0); position: relative; }
+.dash .cell.b1 { background: var(--h1); } .dash .cell.b2 { background: var(--h2); } .dash .cell.b3 { background: var(--h3); }
+.dash .cell.b4 { background: var(--h4); } .dash .cell.b5 { background: var(--h5); } .dash .cell.b6 { background: var(--h6); }
+.dash .cell-v { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: #7c2d12; }
+.dash .cell.b4 .cell-v, .dash .cell.b5 .cell-v, .dash .cell.b6 .cell-v { color: #fff; }
+.dash .cell.zero { background: repeating-linear-gradient(45deg, #f7fafc, #f7fafc 5px, #eef2f7 5px, #eef2f7 10px); }
+.dash .rowtot { display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; color: #0f172a; font-variant-numeric: tabular-nums; }
+.dash .rowtot.idle { color: #94a3b8; font-weight: 600; }
